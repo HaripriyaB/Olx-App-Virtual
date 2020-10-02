@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.media.Image
 import android.os.Bundle
+import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_home, R.id.navigation_sell, R.id.navigation_notifications))
+                R.id.navigation_home, R.id.navigation_sell, R.id.navigation_myads,R.id.navigation_profile))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
@@ -50,5 +51,17 @@ class MainActivity : AppCompatActivity() {
             onActivityResultData.resultData(bundle)
 
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+            android.R.id.home ->{
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+
     }
 }

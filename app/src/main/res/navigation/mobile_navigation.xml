@@ -9,7 +9,17 @@
         android:id="@+id/navigation_home"
         android:name="com.haripriya.olxapplication.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_home_to_browse_categories"
+            app:destination="@+id/navigation_browse_categories"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_sell"
@@ -30,7 +40,17 @@
         android:id="@+id/navigation_upload_photo"
         android:name="com.haripriya.olxapplication.ui.uploadPhoto.UploadPhotoFragment"
         android:label="@string/title_upload_photo"
-        tools:layout="@layout/fragment_upload_photo" />
+        tools:layout="@layout/fragment_upload_photo" >
+
+        <action
+            android:id="@+id/action_photo_upload_to_my_ads"
+            app:destination="@+id/navigation_myads"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/navigation_upload_photo"
+            app:popUpToInclusive="false"/>
+
+    </fragment>
     <fragment
         android:id="@+id/navigation_include_details"
         android:name="com.haripriya.olxapplication.ui.includeDetails.IncludeDetailsFragment"
@@ -47,4 +67,80 @@
 
 
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_myads"
+        android:name="com.haripriya.olxapplication.ui.myads.MyAdsFragment"
+        android:label="@string/title_myads"
+        tools:layout="@layout/fragment_myads"
+        >
+
+        <action
+            android:id="@+id/action_myads_to_details"
+            app:destination="@+id/navigation_details"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/navigation_myads"
+            app:popUpToInclusive="false"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_details"
+        android:name="com.haripriya.olxapplication.ui.details.DetailsFragment"
+        android:label="@string/title_details"
+        tools:layout="@layout/fragment_details"
+        />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.haripriya.olxapplication.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile"
+        >
+
+        <action
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@+id/navigation_settings"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/navigation_profile"
+            app:popUpToInclusive="false"/>
+
+
+    </fragment>
+ <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.haripriya.olxapplication.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings"
+     >
+
+     <action
+         android:id="@+id/action_settings_to_profile"
+         app:destination="@+id/navigation_profile"
+         app:enterAnim="@anim/nav_default_pop_enter_anim"
+         app:exitAnim="@anim/nav_default_exit_anim"
+         app:popUpTo="@id/navigation_settings"
+         app:popUpToInclusive="false"/>
+
+ </fragment>
+
+    <fragment
+        android:id="@+id/navigation_browse_categories"
+        android:name="com.haripriya.olxapplication.ui.browseCategory.BrowseCategoryFragment"
+        android:label="@string/title_browse"
+        tools:layout="@layout/fragment_browse"
+        >
+
+        <action
+            android:id="@+id/action_browse_to_details"
+            app:destination="@+id/navigation_details"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/navigation_browse_categories"
+            app:popUpToInclusive="false"/>
+
+
+    </fragment>
+
 </navigation>

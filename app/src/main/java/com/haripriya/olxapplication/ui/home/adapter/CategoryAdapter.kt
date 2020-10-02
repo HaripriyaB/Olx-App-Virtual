@@ -13,7 +13,8 @@ import com.haripriya.olxapplication.models.CategoriesModel
 import com.haripriya.olxapplication.ui.home.HomeFragment
 import de.hdodenhof.circleimageview.CircleImageView
 
-class CategoryAdapter(var categoriesList:MutableList<CategoriesModel>,var itemClickListener: ItemClickListener) :
+class CategoryAdapter(var categoriesList:MutableList<CategoriesModel>
+                      ,var itemClickListener: ItemClickListener) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     private lateinit var context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

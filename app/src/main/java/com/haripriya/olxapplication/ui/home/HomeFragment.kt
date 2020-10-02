@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextSwitcher
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.haripriya.olxapplication.BaseFragment
@@ -73,6 +74,9 @@ class HomeFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
     }
 
     override fun onItemClick(positon: Int) {
+        val bundle = Bundle()
+        bundle.putString(Constants.KEY,categoriesModel.get(positon).key)
+        findNavController().navigate(R.id.action_home_to_browse_categories,bundle)
 
     }
 

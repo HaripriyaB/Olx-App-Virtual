@@ -4,12 +4,14 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -27,6 +29,7 @@ import com.haripriya.olxapplication.utilities.OnActivityResultData
 import com.haripriya.olxapplication.utilities.SharedPref
 import kotlinx.android.synthetic.main.fragment_sell.*
 import kotlinx.android.synthetic.main.fragment_upload_photo.*
+import me.echodev.resizer.Resizer
 import net.alhazmy13.mediapicker.Image.ImagePicker
 import java.io.File
 import java.util.*
@@ -87,15 +90,26 @@ class UploadPhotoFragment : BaseFragment(), UploadPhotoAdapter.ItemClickListener
             linearlayout_choosephoto.visibility = View.GONE
                 rv_photo.visibility = View.VISIBLE
                 val paths=bundle.getStringArrayList(Constants.IMAGE_PATH)
-                selectedImage = File(paths!![0])
+                selectedImage = compressFile(File(paths!![0]))
                 outputfileUri = paths[0]
                 selectedImageArrayList.add(paths[0])
                 setAdapter()
             }
         })
     }
-
+    private fun compressFile(file: File): File {
+        val resizedImage: File = Resizer(activity)
+            .setTargetLength(1024)
+            .setQuality(80)
+            .setOutputFormat("PNG")
+            .setOutputFilename(file.name.substring(0, file.name.indexOf(".") + 1))
+            .setOutputDirPath(activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!.absolutePath)
+            .setSourceImage(file)
+            .getResizedFile()
+        return resizedImage
+    }
     private fun saveFileInFirebaseStorage() {
+
         for(i in 0..selectedImageArrayList.size-1){
             val file = File(selectedImageArrayList[i])
             imageRef = storageRef.child("images/${file.name}")
@@ -104,7 +118,7 @@ class UploadPhotoFragment : BaseFragment(), UploadPhotoAdapter.ItemClickListener
                 override fun onSuccess(p0: UploadTask.TaskSnapshot?) {
                     imageRef.downloadUrl.addOnSuccessListener {
                         count++
-                        val url  = p0.toString()
+                        val url  = it.toString()
                         imageUriList.add(url)
                         if(count == selectedImageArrayList.size){
                             //postAd
@@ -138,6 +152,7 @@ class UploadPhotoFragment : BaseFragment(), UploadPhotoAdapter.ItemClickListener
                                         .update(docData).addOnSuccessListener {
                                             hideProgressBar()
                                             Toast.makeText(activity!!,"Ad posted Sucessfully",Toast.LENGTH_SHORT).show()
+                                            findNavController().navigate(R.id.action_photo_upload_to_my_ads)
                                         }
 
                                 }
@@ -197,7 +212,7 @@ class UploadPhotoFragment : BaseFragment(), UploadPhotoAdapter.ItemClickListener
     private fun ChooseImage(mode:ImagePicker.Mode)
     {
         ImagePicker.Builder(requireActivity())
-            .mode(ImagePicker.Mode.CAMERA_AND_GALLERY)
+            .mode(mode)
             .compressLevel(ImagePicker.ComperesLevel.MEDIUM)
             .directory(ImagePicker.Directory.DEFAULT)
             .extension(ImagePicker.Extension.PNG)

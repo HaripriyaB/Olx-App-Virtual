@@ -12,7 +12,8 @@ import com.bumptech.glide.Glide
 import com.haripriya.olxapplication.R
 
 class UploadPhotoAdapter(internal var activity:Activity,
-internal var imagedArrayList : ArrayList<String>, internal var itemClickListener: ItemClickListener) : RecyclerView.Adapter<UploadPhotoAdapter.ViewHolder>() {
+internal var imagedArrayList : ArrayList<String>, internal var itemClickListener: ItemClickListener)
+    : RecyclerView.Adapter<UploadPhotoAdapter.ViewHolder>() {
     private lateinit var context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context

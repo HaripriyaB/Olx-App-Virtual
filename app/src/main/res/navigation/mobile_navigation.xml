@@ -22,6 +22,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.haripriya.olxapplication.ui.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
         android:id="@+id/navigation_sell"
         android:name="com.haripriya.olxapplication.ui.sell.SellFragment"
         android:label="@string/title_sell"

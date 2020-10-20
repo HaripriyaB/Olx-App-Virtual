@@ -49,7 +49,6 @@
         </activity>
 
         <activity android:name=".ui.PreviewImageActivity" />
-
     </application>
 
 </manifest>

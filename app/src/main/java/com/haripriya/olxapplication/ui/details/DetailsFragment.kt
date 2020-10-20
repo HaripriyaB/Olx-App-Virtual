@@ -44,15 +44,15 @@ class DetailsFragment : BaseFragment(), DetailsImageAdapter.OnItemClick {
                 dataItemModel = it.toObject(DataItemModel::class.java)!!
 
                 //data set
-                tvname.text = dataItemModel.name
-                tvsize.text = dataItemModel.size
-                year.text = dataItemModel.year
-                author_name.text = dataItemModel.authName
-                desc.text = dataItemModel.description
-                phno.text = dataItemModel.phone
-                tv_title.text = dataItemModel.adTitle
-                tvprice.text = "Rs. "+dataItemModel.price
-                tvdate.text = dataItemModel.year
+                tvname.text = dataItemModel.ad_name
+                tvsize.text = dataItemModel.sell_size
+                year.text = dataItemModel.year_sell
+                author_name.text = dataItemModel.ad_author_name
+                desc.text = dataItemModel.ad_desc
+                phno.text = dataItemModel.ad_phno
+                tv_title.text = dataItemModel.ad_title
+                tvprice.text = "Rs. "+dataItemModel.ad_price
+                tvdate.text = dataItemModel.year_sell
 
                 val dateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
                 tvdate.text = dateFormat.format(dataItemModel.createdDate)
@@ -69,7 +69,7 @@ class DetailsFragment : BaseFragment(), DetailsImageAdapter.OnItemClick {
         call.setOnClickListener(View.OnClickListener {
 
             val dailIntent = Intent(Intent.ACTION_DIAL)
-            dailIntent.data = Uri.parse("tel:"+dataItemModel.phone)
+            dailIntent.data = Uri.parse("tel:"+dataItemModel.ad_phno)
             startActivity(dailIntent)
 
         })

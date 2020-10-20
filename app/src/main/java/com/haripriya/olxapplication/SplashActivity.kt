@@ -32,8 +32,8 @@ import java.util.*
 
 class SplashActivity : BaseActivity() {
 
-    private val MY_PERMISSIONS_REQUEST_LOCATION =100
-    private var locationRequest:LocationRequest?=null
+    private val MY_PERMISSIONS_REQUEST_LOCATION = 100
+    private var locationRequest: LocationRequest? = null
     private val REQUEST_GPS = 101
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -41,7 +41,7 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout. activity_splash)
+        setContentView(R.layout.activity_splash)
         askForPermissions()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         locationCallback()
@@ -50,22 +50,24 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun locationCallback() {
-    locationCallback = object : LocationCallback(){
-        override fun onLocationResult(p0: LocationResult?) {
-            super.onLocationResult(p0)
-            var location = p0?.lastLocation
-            SharedPref(this@SplashActivity).setString(Constants.CITY_NAME,getCityName(location)!!)
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult?) {
+                super.onLocationResult(p0)
+                var location = p0?.lastLocation
+                SharedPref(this@SplashActivity).setString(
+                    Constants.CITY_NAME,
+                    getCityName(location)!!
+                )
 
-            if(SharedPref(this@SplashActivity).getString(Constants.USER_ID)?.isEmpty()!!) {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                finish()
-            }
-            else{
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
+                if (SharedPref(this@SplashActivity).getString(Constants.USER_ID)?.isEmpty()!!) {
+                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                    finish()
+                } else {
+                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                    finish()
+                }
             }
         }
-    }
     }
 
     override fun onDestroy() {
@@ -73,23 +75,23 @@ class SplashActivity : BaseActivity() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
-    private fun getCityName(locationSettingResponse: Location?): String?{
+    private fun getCityName(locationSettingResponse: Location?): String? {
         var cityName = ""
         var geocoder = Geocoder(this, Locale.getDefault())
-        try{
-            val address=geocoder.getFromLocation(
-                locationSettingResponse?.latitude!!
-            ,locationSettingResponse.longitude,1)
+        try {
+            val address = geocoder.getFromLocation(
+                locationSettingResponse?.latitude!!, locationSettingResponse.longitude, 1
+            )
             cityName = address[0].locality
-        }catch (e: IOException){
-            Log.d("LocationException","Failed")
+        } catch (e: IOException) {
+            Log.d("LocationException", "Failed")
         }
         return cityName
     }
 
     private fun askForPermissions() {
-        val permission =arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
-        ActivityCompat.requestPermissions(this, permission,MY_PERMISSIONS_REQUEST_LOCATION)
+        val permission = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        ActivityCompat.requestPermissions(this, permission, MY_PERMISSIONS_REQUEST_LOCATION)
     }
 
     override fun onRequestPermissionsResult(
@@ -99,20 +101,20 @@ class SplashActivity : BaseActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         var granted = false
-        if(requestCode == MY_PERMISSIONS_REQUEST_LOCATION){
-            for(grantResult in grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_LOCATION) {
+            for (grantResult in grantResults) {
                 if (grantResult == PackageManager.PERMISSION_GRANTED) {
                     granted = true
                 }
             }
-            if(granted){
+            if (granted) {
                 enableGPS()
             }
         }
     }
 
     private fun enableGPS() {
-        locationRequest=LocationRequest.create()
+        locationRequest = LocationRequest.create()
         locationRequest?.setExpirationDuration(3000)
         locationRequest?.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
         var builder = LocationSettingsRequest.Builder()
@@ -123,20 +125,21 @@ class SplashActivity : BaseActivity() {
 
         task.addOnCompleteListener(object : OnCompleteListener<LocationSettingsResponse> {
             override fun onComplete(p0: Task<LocationSettingsResponse>) {
-                try{
+                try {
                     val response = task.getResult(ApiException::class.java)
                     startLocationUpdates()
-                }catch (e : ApiException){
-                    when(e.statusCode){
-                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->{
+                } catch (e: ApiException) {
+                    when (e.statusCode) {
+                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
                             val resolvable = e as ResolvableApiException
-                            resolvable.startResolutionForResult(this@SplashActivity,REQUEST_GPS)
+                            resolvable.startResolutionForResult(this@SplashActivity, REQUEST_GPS)
                         }
                     }
                 }
             }
         })
     }
+
     private fun startLocationUpdates() {
 
         if (ActivityCompat.checkSelfPermission(
@@ -147,21 +150,19 @@ class SplashActivity : BaseActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
+        } else {
+            fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                null
+            )
         }
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,null)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == REQUEST_GPS){
+        if (requestCode == REQUEST_GPS) {
             startLocationUpdates()
         }
     }

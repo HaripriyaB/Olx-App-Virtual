@@ -30,10 +30,10 @@ class BrowseCategoryAdapter(var dataItemModelList: MutableList<DataItemModel>,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.e("BrowseCategory",dataItemModelList.get(0).name)
-        holder.name.text = dataItemModelList.get(position).name
-        holder.price.text = "Rs. "+dataItemModelList.get(position).price
-        holder.size.text = dataItemModelList.get(position).size
+        Log.e("BrowseCategory",dataItemModelList.get(0).ad_name)
+        holder.name.text = dataItemModelList.get(position).ad_name
+        holder.price.text = "Rs. "+dataItemModelList.get(position).ad_price
+        holder.size.text = dataItemModelList.get(position).sell_size
 
         Glide.with(context).load(dataItemModelList.get(position).images.get(0))
             .into(holder.image)

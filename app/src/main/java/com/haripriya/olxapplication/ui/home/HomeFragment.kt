@@ -64,7 +64,9 @@ class HomeFragment : BaseFragment(), CategoryAdapter.ItemClickListener {
             }
 
         })
-
+        notification_icon.setOnClickListener(){
+            findNavController().navigate(R.id.navigation_notifications)
+        }
     }
 
     private fun setAdapter() {

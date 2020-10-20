@@ -38,14 +38,16 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
 
                 />
+
             <ImageView
+                android:id="@+id/notification_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_notifications_black_24dp"
-                android:padding="@dimen/dp_4"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                />
+                android:layout_marginEnd="20dp"
+                android:padding="@dimen/dp_4"
+                android:src="@drawable/ic_notifications_black_24dp" />
 
         </RelativeLayout>
 

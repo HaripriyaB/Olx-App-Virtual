@@ -29,17 +29,17 @@ import java.util.*
 
 class LoginActivity : BaseActivity() {
 
-    private var callbackManager: CallbackManager?=null
-    private var auth: FirebaseAuth?=null
+    private var callbackManager: CallbackManager? = null
+    private var auth: FirebaseAuth? = null
     private val RC_SIGN_IN: Int = 100
-    private var gso: GoogleSignInOptions?=null
-    private var googleSignInClient :GoogleSignInClient?=null
+    private var gso: GoogleSignInOptions? = null
+    private var googleSignInClient: GoogleSignInClient? = null
 
     private val EMAIL = "email"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth=FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         setContentView(R.layout.activity_login)
         FacebookSdk.sdkInitialize(getApplicationContext());
 
@@ -74,31 +74,49 @@ class LoginActivity : BaseActivity() {
         LoginManager.getInstance().registerCallback(callbackManager,
             object : FacebookCallback<LoginResult?> {
                 override fun onSuccess(loginResult: LoginResult?) {
-                    var credential =
+                    val credential =
                         FacebookAuthProvider.getCredential(loginResult?.accessToken.toString())
-                    auth?.signInWithCredential(credential)?.addOnCompleteListener{ task ->
+                    auth?.signInWithCredential(credential)?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             val account = auth?.currentUser
-                            if(account?.email!=null){
-                                SharedPref(applicationContext).setString(Constants.USER_EMAIL, account.email!!)
+                            if (account?.email != null) {
+                                SharedPref(applicationContext).setString(
+                                    Constants.USER_EMAIL,
+                                    account.email!!
+                                )
                             }
-                            if(account?.uid!=null){
-                                SharedPref(applicationContext).setString(Constants.USER_ID, account.uid!!)
+                            if (account?.uid != null) {
+                                SharedPref(applicationContext).setString(
+                                    Constants.USER_ID,
+                                    account.uid
+                                )
                             }
-                            if(account?.displayName!=null){
-                                SharedPref(applicationContext).setString(Constants.USER_NAME, account.displayName!!)
+                            if (account?.displayName != null) {
+                                SharedPref(applicationContext).setString(
+                                    Constants.USER_NAME,
+                                    account.displayName!!
+                                )
                             }
-                            if(account?.photoUrl!=null){
-                                SharedPref(applicationContext).setString(Constants.USER_PHOTO, account.photoUrl.toString()!!)
+                            if (account?.photoUrl != null) {
+                                SharedPref(applicationContext).setString(
+                                    Constants.USER_PHOTO,
+                                    account.photoUrl.toString()
+                                )
                             }
-                            Toast.makeText(this@LoginActivity,"Welcome "+account?.displayName,Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Welcome " + account?.displayName,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(baseContext, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                baseContext, "Authentication failed.",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                     }
@@ -115,10 +133,10 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun clickListeners() {
-        fb_login.setOnClickListener{
+        fb_login.setOnClickListener {
             login_button.performClick()
         }
-        go_login.setOnClickListener{
+        go_login.setOnClickListener {
             googleSignIn()
         }
 
@@ -135,7 +153,7 @@ class LoginActivity : BaseActivity() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(this,gso!!)
+        googleSignInClient = GoogleSignIn.getClient(this, gso!!)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -153,33 +171,33 @@ class LoginActivity : BaseActivity() {
                 Log.w("Login", "Google sign in failed", e)
                 // ...
             }
-        }else{
+        } else {
             callbackManager?.onActivityResult(requestCode, resultCode, data);
         }
 
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(account.idToken,null)
-        auth!!.signInWithCredential(credential).addOnCompleteListener{
-            if(it.isSuccessful){
-                if(account.email!=null){
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        auth!!.signInWithCredential(credential).addOnCompleteListener {
+            if (it.isSuccessful) {
+                if (account.email != null) {
                     SharedPref(this).setString(Constants.USER_EMAIL, account.email!!)
                 }
-                if(account.id!=null){
+                if (account.id != null) {
                     SharedPref(this).setString(Constants.USER_ID, account.id!!)
                 }
-                if(account.displayName!=null){
+                if (account.displayName != null) {
                     SharedPref(this).setString(Constants.USER_NAME, account.displayName!!)
                 }
-                if(account.photoUrl!=null){
-                    SharedPref(this).setString(Constants.USER_PHOTO, account.photoUrl.toString()!!)
+                if (account.photoUrl != null) {
+                    SharedPref(this).setString(Constants.USER_PHOTO, account.photoUrl.toString())
                 }
-                Toast.makeText(this,"Welcome "+account.displayName,Toast.LENGTH_LONG).show()
-                startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+                Toast.makeText(this, "Welcome " + account.displayName, Toast.LENGTH_LONG).show()
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 finish()
-            }else{
-                Toast.makeText(this,"Sign in failed",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -52,16 +52,16 @@ class BrowseCategoryFragment : BaseFragment(), BrowseCategoryAdapter.ItemClickLi
             override fun afterTextChanged(s: Editable?) {
                 var temp: MutableList<DataItemModel> = ArrayList()
                 for(data in dataItemModel){
-                    if(data.adTitle.contains(s.toString().capitalize()) ||
-                        data.adTitle.contains(s.toString()) ||
-                        data.name.contains(s.toString().capitalize()) ||
-                        data.name.contains(s.toString()) ||
-                        data.authName.contains(s.toString().capitalize()) ||
-                        data.authName.contains(s.toString()) ||
+                    if(data.ad_title.contains(s.toString().capitalize()) ||
+                        data.ad_title.contains(s.toString()) ||
+                        data.ad_name.contains(s.toString().capitalize()) ||
+                        data.ad_name.contains(s.toString()) ||
+                        data.ad_author_name.contains(s.toString().capitalize()) ||
+                        data.ad_author_name.contains(s.toString()) ||
                         data.type.contains(s.toString().capitalize()) ||
                         data.type.contains(s.toString()) ||
-                        data.description.contains(s.toString().capitalize()) ||
-                        data.description.contains(s.toString())){
+                        data.ad_desc.contains(s.toString().capitalize()) ||
+                        data.ad_desc.contains(s.toString())){
                         temp.add(data)
                     }
                 }
